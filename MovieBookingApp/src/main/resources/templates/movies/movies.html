@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Movie App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <link rel="stylesheet" th:href="@{/theme/lib/lightbox/css/lightbox.min.css}">
+  <link rel="stylesheet" th:href="@{/theme/lib/owlcarousel/assets/owl.carousel.min.css}">
+
+  <link rel="stylesheet" th:href="@{/theme/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/theme/css/style.css}">
+
+</head>
+
+<body style="background-color: #f8f9fa; padding: 20px;">
+
+<div class="container-fluid fixed-top">
+
+    <div class="container topbar bg-primary d-none d-lg-block">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+                    <a href="#" class="text-white">Movie Booking App</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i>
+                    <a href="#" class="text-white">movieapp@gmail.com</a>
+                </small>
+            </div>
+            <div class="top-link pe-2">
+                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0">
+
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="index.html" class="navbar-brand">
+                <h1 class="text-primary display-6" th:text="${pageTitle}"></h1>
+            </a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a href="theatres.html" class="nav-item nav-link">Theatres</a>
+                    <a href="movies.html" class="nav-item nav-link active">Ticket Booking</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container mt-4">
+        <!-- Bootstrap Carousel -->
+        <div id="theatreCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Iterate over the list of images -->
+                <div th:each="image, iterStat : ${banners}" class="carousel-item"
+                     th:classappend="${iterStat.first} ? 'active' : ''">
+                    <img th:src="${image}" class="d-block w-100" alt="Theatre Image"
+                         style="height: 300px; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Previous & Next Buttons -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#theatreCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#theatreCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script th:src="@{/theme/lib/easing/easing.min.js}" src=""></script>
+<script th:src="@{/theme/lib/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/theme/lib/lightbox/js/lightbox.min.js}"></script>
+<script th:src="@{/theme/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Template Javascript -->
+<script type="text/javascript" th:src="@{/theme/js/main.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Movies App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/theme/lib/lightbox/css/lightbox.min.css}">
+    <link rel="stylesheet" th:href="@{/theme/lib/owlcarousel/assets/owl.carousel.min.css}">
+
+    <link rel="stylesheet" th:href="@{/theme/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/theme/css/style.css}">
+
+
+    <style>
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .seat {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .available {
+            background-color: green;
+            color: white;
+        }
+        .booked {
+            background-color: red;
+            color: white;
+        }
+        .screen-link {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+        .timing-container {
+            display: flex;
+            flex-wrap: nowrap; /* Ensures the timings stay on a single line */
+            justify-content: start; /* Align timings from left to right */
+            gap: 10px; /* Adds some space between the timings */
+        }
+
+        .timing-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            width: auto;
+        }
+
+
+    </style>
+
+    <style>
+        /* Basic styling for the card container */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+            gap: 20px; /* Space between cards */
+            padding: 20px;
+        }
+
+        /* Card styling */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image styling inside the card */
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Movie title */
+        .card h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        /* Movie description */
+        .card p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 1200px) {
+            .card-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+            }
+        }
+
+        @media (max-width: 800px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+            }
+        }
+
+        @media (max-width: 500px) {
+            .card-container {
+                grid-template-columns: 1fr; /* 1 column on very small screens */
+            }
+        }
+
+
+    </style>
+
+    <style>
+        /* Card container layout */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+            gap: 20px; /* Space between the cards */
+            padding: 20px;
+        }
+
+        /* Card styling */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image styling inside the card */
+        .card img {
+            width: 100%;
+            height: 80%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Movie title styling */
+        .card h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        /* Movie description styling */
+        .card p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 1200px) {
+            .card-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 cards on medium screens */
+            }
+        }
+
+        @media (max-width: 800px) {
+            .card-container {
+                grid-template-columns: 1fr; /* 1 card per row on smaller screens */
+            }
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <div class="container topbar bg-primary d-none d-lg-block">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+                    <a href="#" class="text-white">Movie Booking App</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i>
+                    <a href="#" class="text-white">movieapp@gmail.com</a>
+                </small>
+            </div>
+            <div class="top-link pe-2">
+                <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0">
+
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="theatres.html" class="navbar-brand">
+                <h1 class="text-primary display-6" th:text="${pageTitle}"></h1>
+            </a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a href="theatres.html" class="nav-item nav-link">Theatres</a>
+                    <a href="booking.html" class="nav-item nav-link active">Ticket Booking</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    </br>
+    <!-- DataTable Search -->
+    <input type="text" id="movieSearch" class="form-control mb-3" placeholder="Search movies...">
+
+
+    <div class="card-container">
+        <!-- Loop through the movies and display each in a card -->
+        <div th:each="movie : ${movies}" class="card">
+            <img th:src="@{/theme/img/movie-time.jpg}" alt="Movie Image">
+            <h3 th:text="${movie.title}">Movie Title</h3>
+            <p th:text="${movie.screen.theatre.name}">Movie Description</p>
+
+            <div th:each="screen : ${movie.screen.theatre.screens}" th:if="${screen.movie.id == movie.id}">
+                <button type="button" class="btn btn-success">
+                    Screen : <span style="color:white;" th:text="${screen.name}"></span>
+                </button>
+                </br></br>
+                <div class="timing-container">
+                    <div th:each="timing : ${movie.screen.movieTimings}" class="timing-box">
+                        <a th:href="@{/seats/screen/{screenId}/movie/{movieId}/timing/{timingId}(screenId=${screen.id}, movieId=${movie.id}, timingId=${timing.id})}"
+                           class="btn btn-secondary">
+                            <span th:text="${timing.showTime}">Timing</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script th:src="@{/theme/lib/easing/easing.min.js}" src=""></script>
+<script th:src="@{/theme/lib/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/theme/lib/lightbox/js/lightbox.min.js}"></script>
+<script th:src="@{/theme/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Template Javascript -->
+<script type="text/javascript" th:src="@{/theme/js/main.js}"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable for search & pagination
+        $('#movieSearch').on('keyup', function () {
+            let value = $(this).val().toLowerCase();
+            $(".card").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+
+
+</script>
+
+</body>
+</html>
